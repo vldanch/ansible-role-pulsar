@@ -1,0 +1,19 @@
+[Unit]
+Description=Apache Pulsar Bookkeeper
+Documentation=https://pulsar.apache.org
+Requires=network.target
+After=network.target
+
+[Service]
+Type=forking
+ExecStart={{ pulsar_dir }}/bin/pulsar-daemon start bookie
+ExecStop={{ pulsar_dir }}/bin/pulsar-daemon stop bookie
+WorkingDirectory={{ pulsar_root_dir }}
+Restart=on-failure
+PrivateTmp=true
+User={{ pulsar_user }}
+Group={{ pulsar_group }}
+
+[Install]
+WantedBy=multi-user.target
+Alias=pulsar-bookkeeper.service

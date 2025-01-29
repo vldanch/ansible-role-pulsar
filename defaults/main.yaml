@@ -1,0 +1,49 @@
+---
+# Installation variables
+
+pulsar_version: 4.0.1
+pulsar_cluster_name: pulsar-cluster
+# pulsar_web_service_url: ansible-hostname
+pulsar_web_service_url_1: ansible-hostname
+pulsar_web_service_url_2: ansible-hostname
+pulsar_web_service_url_3: ansible-hostname
+pulsar_web_service_port: 8080
+# pulsar_web_service_url_tls: ansible-hostname
+pulsar_web_service_url_tls_1: ansible-hostname
+pulsar_web_service_url_tls_2: ansible-hostname
+pulsar_web_service_url_tls_3: ansible-hostname
+pulsar_web_service_tls_port: 8443
+# pulsar_broker_service_url: ansible-hostname
+pulsar_broker_service_1: ansible-hostname
+pulsar_broker_service_2: ansible-hostname
+pulsar_broker_service_3: ansible-hostname
+pulsar_broker_service_port: 6650
+# pulsar_broker_service_url_tls: ansible-hostname
+pulsar_broker_service_url_tls_1: ansible-hostname
+pulsar_broker_service_url_tls_2: ansible-hostname
+pulsar_broker_service_url_tls_3: ansible-hostname
+pulsar_broker_service_tls_port: 6651
+pulsar_zk_server_1: ansible-hostname
+pulsar_zk_server_2: ansible-hostname
+pulsar_zk_server_3: ansible-hostname
+pulsar_zk_port: 2184
+pulsar_zk_chroot_path: chroot-path
+# wget 'https://www.apache.org/dyn/mirrors/mirrors.cgi?action=download&filename=pulsar/pulsar-4.0.1/apache-pulsar-4.0.1-bin.tar.gz' -O apache-pulsar-4.0.1-bin.tar.gz
+pulsar_mirror: https://www.apache.org/dyn/mirrors/mirrors.cgi?action=download&filename=pulsar/
+pulsar_package: apache-pulsar-{{ pulsar_version }}-bin.tar.gz
+
+pulsar_create_user_group: true
+pulsar_group: pulsar
+pulsar_user: pulsar
+
+pulsar_root_dir: /usr/share
+pulsar_install_dir: '{{ pulsar_root_dir }}/apache-pulsar-{{ pulsar_version }}'
+# The pulsar_dir is created as a symlik to the actual installation directory.
+# All other configuration and variables use the symlinked directory.
+pulsar_dir: '{{ pulsar_root_dir }}/pulsar'
+pulsar_log_dir: /var/log/pulsar
+
+# Start bookkeeper after installation
+bookkeeper_start: yes
+# Restart bookkeeper on configuration change
+bookkeeper_restart: yes

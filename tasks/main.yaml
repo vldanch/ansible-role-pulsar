@@ -1,0 +1,208 @@
+---
+- name: Set pulsar version variables
+  ansible.builtin.set_fact:
+    pulsar_version_major: "{{ pulsar_version.split('.')[0] }}"
+    pulsar_version_minor: "{{ pulsar_version.split('.')[1] }}"
+
+- name: Load OS-specific variables
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - ../vars/{{ ansible_os_family }}.yml
+    - ../vars/{{ ansible_distribution_release }}.yml
+    - ../vars/empty.yml
+  tags:
+    - always
+
+- name: Create pulsar group
+  ansible.builtin.group:
+    name: "{{ pulsar_group }}"
+    state: present
+    system: yes
+  when: pulsar_create_user_group | bool
+  tags:
+    - pulsar_group
+
+- name: Create pulsar user
+  ansible.builtin.user:
+    name: "{{ pulsar_user }}"
+    group: "{{ pulsar_group }}"
+    state: present
+    createhome: no
+    system: yes
+  when: pulsar_create_user_group | bool
+  tags:
+    - pulsar_user
+
+- name: Check if pulsar has already been downloaded and unpacked
+  ansible.builtin.stat:
+    path: "{{ pulsar_install_dir }}"
+  register: dir
+
+- name: Download Apache Pulsar
+  ansible.builtin.get_url:
+    url: "{{ pulsar_mirror }}/pulsar-{{ pulsar_version }}/{{ pulsar_package }}"
+    dest: /tmp
+  when: not dir.stat.exists
+  tags:
+    - pulsar_download
+
+- name: Create pulsar installation dir {{ pulsar_install_dir }}
+  ansible.builtin.file:
+    path: "{{ pulsar_install_dir }}"
+    state: directory
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+    mode: 0755
+  when: not dir.stat.exists
+  tags:
+    - pulsar_dirs
+
+- name: Unpack Apache Pulsar
+  ansible.builtin.unarchive:
+    src: /tmp/{{ pulsar_package }}
+    dest: "{{ pulsar_install_dir }}"
+    copy: no
+    extra_opts: [--strip-components=1]
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+  when: not dir.stat.exists
+  tags:
+    - pulsar_unpack
+
+- name: Create symlink to pulsar installation
+  ansible.builtin.file:
+    src: "{{ pulsar_install_dir }}"
+    dest: "{{ pulsar_dir }}"
+    state: link
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+  tags:
+    - pulsar_dirs
+
+- name: Create pulsar log directory
+  ansible.builtin.file:
+    path: "{{ pulsar_log_dir }}"
+    state: directory
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+    mode: 0755
+  tags:
+    - pulsar_dirs
+
+- name: Create directory for bookkeeper ledgers
+  ansible.builtin.file:
+    path: "/usr/share/apache-pulsar-{{ pulsar_version }}/data/bookkeeper/ledgers/current"
+    state: directory
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+    mode: 0750
+  tags:
+    - bookkeeper_dirs
+
+- name: Set ownership for the data directory
+  ansible.builtin.command:
+    cmd: chown -R {{ pulsar_user }}:{{ pulsar_group }} /usr/share/apache-pulsar-{{ pulsar_version }}/data
+  tags:
+    - bookkeeper_dirs
+
+- name: Set permissions for the data directory
+  ansible.builtin.command:
+    cmd: chmod -R 750 /usr/share/apache-pulsar-{{ pulsar_version }}/data
+  tags:
+    - bookkeeper_dirs
+
+- name: Initialize Pulsar cluster metadata
+  ansible.builtin.command:
+    cmd: >
+      /usr/share/apache-pulsar-{{ pulsar_version }}/bin/pulsar initialize-cluster-metadata
+      --cluster {{ pulsar_cluster_name }}
+      --metadata-store zk:{{ pulsar_zk_server_1 }}:{{ pulsar_zk_port }},{{ pulsar_zk_server_2 }}:{{ pulsar_zk_port }},{{ pulsar_zk_server_3 }}:{{ pulsar_zk_port }}
+      --configuration-metadata-store zk:{{ pulsar_zk_server_1 }}:{{ pulsar_zk_port }},{{ pulsar_zk_server_2 }}:{{ pulsar_zk_port }},{{ pulsar_zk_server_3 }}:{{ pulsar_zk_port }}
+      --web-service-url http://{{ pulsar_web_service_url_1 }}:{{ pulsar_web_service_port }},{{ pulsar_web_service_url_2 }}:{{ pulsar_web_service_port }},{{ pulsar_web_service_url_3 }}:{{ pulsar_web_service_port }}
+      --web-service-url-tls https://{{ pulsar_web_service_url_tls_1 }}:{{ pulsar_web_service_tls_port }},{{ pulsar_web_service_url_tls_2 }}:{{ pulsar_web_service_tls_port }},{{ pulsar_web_service_url_tls_3 }}:{{ pulsar_web_service_tls_port }}
+      --broker-service-url pulsar://{{ pulsar_broker_service_1 }}:{{ pulsar_broker_service_port }},{{ pulsar_broker_service_2 }}:{{ pulsar_broker_service_port }},{{ pulsar_broker_service_3 }}:{{ pulsar_broker_service_port }}
+      --broker-service-url-tls pulsar+ssl://{{ pulsar_broker_service_url_tls_1 }}:{{ pulsar_broker_service_tls_port }},{{ pulsar_broker_service_url_tls_2 }}:{{ pulsar_broker_service_tls_port }},{{ pulsar_broker_service_url_tls_3 }}:{{ pulsar_broker_service_tls_port }}
+  environment:
+    PULSAR_HOME: "{{ pulsar_install_dir }}"
+  tags:
+    - pulsar_metadata
+  # when: pulsar_installed | bool
+
+# /usr/share/pulsar/conf/bookkeeper.conf is the default file bookkeeper will use when starting
+- name: Template configuration file to bookkeeper.conf
+  ansible.builtin.template:
+    src: bookkeeper.conf.j2
+    dest: "{{ pulsar_dir }}/conf/bookkeeper.conf"
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+    mode: 0644
+  notify:
+    - Restart bookkeeper service
+  tags:
+    - bookkeeper_config
+
+- name: Create directory for symlink to bookkeeper configuration file
+  ansible.builtin.file:
+    path: /etc/bookkeeper
+    state: directory
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+    mode: 0755
+  tags:
+    - bookkeeper_config
+
+- name: Ensure /etc/pulsar directory exists
+  ansible.builtin.file:
+    path: /etc/pulsar
+    state: directory
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+    mode: 0755
+  tags:
+    - pulsar_dir
+
+- name: Create symlink to bookkeeper configuration file
+  ansible.builtin.file:
+    src: "{{ pulsar_dir }}/conf/bookkeeper.conf"
+    dest: /etc/pulsar/bookkeeper.conf
+    state: link
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+  tags:
+    - bookkeeper_config
+
+- name: Template bookkeeper systemd service file
+  ansible.builtin.template:
+    src: bookkeeper.service.j2
+    dest: "{{ bookkeeper_unit_path }}"
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+    mode: 0644
+  tags:
+    - bookkeeper_service
+
+- name: Start the bookkeeper service
+  ansible.builtin.systemd:
+    name: pulsar-bookkeeper.service
+    state: started
+    enabled: yes
+  when: bookkeeper_start
+  tags:
+    - bookkeeper_service
+
+# Cleanup install by deleting downloaded pulsar archive
+- name: Delete /tmp/{{ pulsar_package }} file
+  ansible.builtin.file:
+    path: /tmp/{{ pulsar_package }}
+    state: absent
+  tags:
+    - pulsar_cleanup
+
+# Set Ansible fact that Pulsar has completed installation. This is so that this role can be used in
+# other dependent roles. Those roles can check for this fact to determine whether or not this role
+# should be run. Failing to do so will mean that this role is executed even if it has already been run.
+- name: Set fact pulsar_installed
+  ansible.builtin.set_fact:
+    pulsar_installed: true
+  tags:
+    - pulsar_install_fact
