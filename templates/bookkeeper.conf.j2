@@ -139,43 +139,43 @@ useHostNameAsBookieID={{ pulsar_bookie_use_host_name_as_bookie_id }}
 # Since garbage collection is running in background, too frequent gc
 # will heart performance. It is better to give a higher number of gc
 # interval if there is enough disk capacity.
-gcWaitTime=900000
+gcWaitTime={{ pulsar_bookie_gc_wait_time }}
 
 # How long the interval to trigger next garbage collection of overreplicated
 # ledgers, in milliseconds [Default: 1 day]. This should not be run very frequently
 # since we read the metadata for all the ledgers on the bookie from zk
-gcOverreplicatedLedgerWaitTime=86400000
+gcOverreplicatedLedgerWaitTime={{ pulsar_bookie_gc_overreplicated_ledger_wait_time }}
 
 # Number of threads that should handle write requests. if zero, the writes would
 # be handled by netty threads directly.
-numAddWorkerThreads=0
+numAddWorkerThreads={{ pulsar_bookie_num_add_worker_threads }}
 
 # Number of threads that should handle read requests. if zero, the reads would
 # be handled by netty threads directly.
-numReadWorkerThreads=8
+numReadWorkerThreads={{ pulsar_bookie_num_read_worker_threads }}
 
 # Number of threads that should be used for high priority requests
 # (i.e. recovery reads and adds, and fencing).
-numHighPriorityWorkerThreads=8
+numHighPriorityWorkerThreads={{ pulsar_bookie_num_high_priority_worker_threads }}
 
 # If read workers threads are enabled, limit the number of pending requests, to
 # avoid the executor queue to grow indefinitely
-maxPendingReadRequestsPerThread=2500
+maxPendingReadRequestsPerThread={{ pulsar_bookie_max_pending_read_requests_per_thread }}
 
 # If add workers threads are enabled, limit the number of pending requests, to
 # avoid the executor queue to grow indefinitely
-maxPendingAddRequestsPerThread=10000
+maxPendingAddRequestsPerThread={{ pulsar_bookie_max_pending_add_requests_per_thread }}
 
 # Use auto-throttling of the read-worker threads. This is done
 # to ensure the bookie is not using unlimited amount of memory
 # to respond to read-requests.
-readWorkerThreadsThrottlingEnabled=true
+readWorkerThreadsThrottlingEnabled={{ pulsar_bookie_read_worker_threads_throttling_enabled }}
 
 # Option to enable busy-wait settings. Default is false.
 # WARNING: This option will enable spin-waiting on executors and IO threads in order to reduce latency during
 # context switches. The spinning will consume 100% CPU even when bookie is not doing any work. It is recommended to
 # reduce the number of threads in the main workers pool and Netty event loop to only have few CPU cores busy.
-enableBusyWait=false
+enableBusyWait={{ pulsar_bookie_enable_busy_wait }}
 
 # Whether force compaction is allowed when the disk is full or almost full.
 # Forcing GC may get some space back, but may also fill up disk space more quickly.
@@ -190,38 +190,38 @@ enableBusyWait=false
 # It will enable you to manually force compact the entry log even if
 # the entry log compaction is disabled. The 'minorCompactionThreshold' or
 # 'majorCompactionThreshold' still needs to be specified.
-forceAllowCompaction=true
+forceAllowCompaction={{ pulsar_bookie_force_allow_compaction }}
 
 #############################################################################
 ## TLS settings
 #############################################################################
 
 # TLS Provider (JDK or OpenSSL).
-# tlsProvider=OpenSSL
+# tlsProvider={{ pulsar_bookie_tls_provider }}
 
 # The path to the class that provides security.
-# tlsProviderFactoryClass=org.apache.bookkeeper.tls.TLSContextFactory
+# tlsProviderFactoryClass={{ pulsar_bookie_tls_provider_factory_class }}
 
 # Type of security used by server.
-# tlsClientAuthentication=true
+# tlsClientAuthentication={{ pulsar_bookie_tls_client_authentication }}
 
 # Bookie Keystore type.
-# tlsKeyStoreType=JKS
+# tlsKeyStoreType={{ pulsar_bookie_tls_key_store_type }}
 
 # Bookie Keystore location (path).
-# tlsKeyStore=null
+# tlsKeyStore={{ pulsar_bookie_tls_key_store }}
 
 # Bookie Keystore password path, if the keystore is protected by a password.
-# tlsKeyStorePasswordPath=null
+# tlsKeyStorePasswordPath={{ pulsar_bookie_tls_key_store_password_path }}
 
 # Bookie Truststore type.
-# tlsTrustStoreType=null
+# tlsTrustStoreType={{ pulsar_bookie_tls_trust_store_type }}
 
 # Bookie Truststore location (path).
-# tlsTrustStore=null
+# tlsTrustStore={{ pulsar_bookie_tls_trust_store }}
 
 # Bookie Truststore password path, if the trust store is protected by a password.
-# tlsTrustStorePasswordPath=null
+# tlsTrustStorePasswordPath={{ pulsar_bookie_tls_trust_store_password_path }}
 
 #############################################################################
 ## Long poll request parameter settings
