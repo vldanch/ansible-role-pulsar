@@ -5,3 +5,10 @@
     state: restarted
     daemon_reload: yes
   when: bookkeeper_restart
+
+- name: Restart broker service
+  ansible.builtin.systemd:
+    name: pulsar-broker.service
+    state: restarted
+    daemon_reload: yes
+  when: broker_restart
