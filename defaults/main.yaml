@@ -36,6 +36,26 @@ pulsar_bookie_allow_loopback: false
 pulsar_bookie_death_watch_interval: 1000
 pulsar_bookie_flush_interval: 60000
 pulsar_bookie_use_host_name_as_bookie_id: false
+pulsar_bookie_gc_wait_time: 900000
+pulsar_bookie_gc_overreplicated_ledger_wait_time: 86400000
+pulsar_bookie_num_add_worker_threads: 0
+pulsar_bookie_num_read_worker_threads: 8
+pulsar_bookie_num_high_priority_worker_threads: 8
+pulsar_bookie_max_pending_read_requests_per_thread: 2500
+pulsar_bookie_max_pending_add_requests_per_thread: 10000
+pulsar_bookie_read_worker_threads_throttling_enabled: true
+pulsar_bookie_enable_busy_wait: false
+pulsar_bookie_force_allow_compaction: true
+pulsar_bookie_tls_provider: OpenSSL
+pulsar_bookie_tls_provider_factory_class: org.apache.bookkeeper.tls.TLSContextFactory
+pulsar_bookie_tls_client_authentication: true
+pulsar_bookie_tls_key_store_type: JKS
+pulsar_bookie_tls_key_store: null
+pulsar_bookie_tls_key_store_password_path: null
+pulsar_bookie_tls_trust_store_type: null
+pulsar_bookie_tls_trust_store: null
+pulsar_bookie_tls_trust_store_password_path: null
+
 pulsar_zk_chroot_path: chroot-path
 # wget 'https://www.apache.org/dyn/mirrors/mirrors.cgi?action=download&filename=pulsar/pulsar-4.0.1/apache-pulsar-4.0.1-bin.tar.gz' -O apache-pulsar-4.0.1-bin.tar.gz
 pulsar_mirror: https://www.apache.org/dyn/mirrors/mirrors.cgi?action=download&filename=pulsar/
