@@ -141,6 +141,19 @@
   tags:
     - bookkeeper_config
 
+# /usr/share/pulsar/conf/broker.conf is the default file broker will use when starting
+- name: Template configuration file to broker.conf
+  ansible.builtin.template:
+    src: broker.conf.j2
+    dest: "{{ pulsar_dir }}/conf/broker.conf"
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+    mode: 0644
+  notify:
+    - Restart broker service
+  tags:
+    - broker_config
+
 - name: Create directory for symlink to bookkeeper configuration file
   ansible.builtin.file:
     path: /etc/bookkeeper
@@ -171,6 +184,16 @@
   tags:
     - bookkeeper_config
 
+- name: Create symlink to broker configuration file
+  ansible.builtin.file:
+    src: "{{ pulsar_dir }}/conf/broker.conf"
+    dest: /etc/pulsar/broker.conf
+    state: link
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+  tags:
+    - broker_config
+
 - name: Template bookkeeper systemd service file
   ansible.builtin.template:
     src: bookkeeper.service.j2
@@ -181,6 +204,16 @@
   tags:
     - bookkeeper_service
 
+- name: Template broker systemd service file
+  ansible.builtin.template:
+    src: broker.service.j2
+    dest: "{{ broker_unit_path }}"
+    group: "{{ pulsar_group }}"
+    owner: "{{ pulsar_user }}"
+    mode: 0644
+  tags:
+    - broker_service
+
 - name: Start the bookkeeper service
   ansible.builtin.systemd:
     name: pulsar-bookkeeper.service
@@ -189,6 +222,15 @@
   when: bookkeeper_start
   tags:
     - bookkeeper_service
+
+- name: Start the broker service
+  ansible.builtin.systemd:
+    name: pulsar-broker.service
+    state: started
+    enabled: yes
+  when: broker_start
+  tags:
+    - broker_service
 
 # Cleanup install by deleting downloaded pulsar archive
 - name: Delete /tmp/{{ pulsar_package }} file
