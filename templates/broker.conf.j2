@@ -44,13 +44,13 @@ configurationMetadataStoreUrl=
 brokerServicePort={{ pulsar_broker_service_port }}
 
 # Broker data port for TLS - By default TLS is disabled
-brokerServicePortTls={{ pulsar_broker_service_tls_port }}
+brokerServicePortTls=
 
 # Port to use to server HTTP request
-webServicePort={{ pulsar_web_service_port }}
+webServicePort={{ pulsar_broker_web_service_port }}
 
 # Port to use to server HTTPS request - By default TLS is disabled
-webServicePortTls={{ pulsar_web_service_tls_port }}
+webServicePortTls=
 
 # Specify the tls protocols the broker's web service will use to negotiate during TLS handshake
 # (a comma-separated list of protocol names).
@@ -735,16 +735,16 @@ authenticateOriginalAuthData=false
 tlsCertRefreshCheckDurationSec=300
 
 # Path for the TLS certificate file
-tlsCertificateFilePath=
+# tlsCertificateFilePath=
 
 # Path for the TLS private key file
-tlsKeyFilePath=
+# tlsKeyFilePath=
 
 # Path for the trusted TLS certificate file.
 # This cert is used to verify that any certs presented by connecting clients
 # are signed by a certificate authority. If this verification
 # fails, then the certs are untrusted and the connections are dropped.
-tlsTrustCertsFilePath=
+# tlsTrustCertsFilePath=
 
 # Accept untrusted TLS certificate from client.
 # If true, a client with a cert which cannot be verified with the

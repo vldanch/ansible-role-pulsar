@@ -24,7 +24,7 @@
 #############################################################################
 
 # Port that bookie server listen on
-bookiePort=3181
+bookiePort={{ pulsar_bookie_port }}
 
 # Directories BookKeeper outputs its write ahead log.
 # Could define multi directories to store write head logs, separated by ','.
@@ -36,7 +36,7 @@ bookiePort=3181
 
 # Directory Bookkeeper outputs its write ahead log
 # @deprecated since 4.5.0. journalDirectories is preferred over journalDirectory.
-journalDirectory=data/bookkeeper/journal
+journalDirectory={{ pulsar_bookie_journal_directory }}
 
 # Configure the bookie to allow/disallow multiple ledger/index/journal directories
 # in the same filesystem disk partition
@@ -44,16 +44,16 @@ journalDirectory=data/bookkeeper/journal
 
 # Minimum safe Usable size to be available in index directory for bookie to create
 # Index File while replaying journal at the time of bookie Start in Readonly Mode (in bytes)
-minUsableSizeForIndexFileCreation=1073741824
+minUsableSizeForIndexFileCreation={{ pulsar_bookie_min_usable_size_for_index_file_creation }}
 
 # Set the network interface that the bookie should listen on.
 # If not set, the bookie will listen on all interfaces.
-listeningInterface=eth0
+listeningInterface={{ pulsar_bookie_listening_interface }}
 
 # Configure a specific hostname or IP address that the bookie should use to advertise itself to
 # clients. If not set, bookie will advertised its own IP address or hostname, depending on the
 # listeningInterface and useHostNameAsBookieID settings.
-advertisedAddress={{ pulsar_advertised_address }}
+advertisedAddress={{ pulsar_bookie_advertised_address }}
 
 # Whether the bookie allowed to use a loopback interface as its primary
 # interface(i.e. the interface it uses to establish its identity)?
@@ -66,10 +66,10 @@ advertisedAddress={{ pulsar_advertised_address }}
 # establish their identities as 127.0.0.1:3181, and only one will be able
 # to join the cluster. For VPSs configured like this, you should explicitly
 # set the listening interface.
-allowLoopback=false
+allowLoopback={{ pulsar_bookie_allow_loopback }}
 
 # Interval to watch whether bookie is dead or not, in milliseconds
-bookieDeathWatchInterval=1000
+bookieDeathWatchInterval={{ pulsar_bookie_death_watch_interval }}
 
 # When entryLogPerLedgerEnabled is enabled, checkpoint doesn't happens
 # when a new active entrylog is created / previous one is rolled over.
@@ -84,7 +84,7 @@ bookieDeathWatchInterval=1000
 # to get better performance, but you need to pay more time on bookie
 # server restart after failure.
 # This config is used only when entryLogPerLedgerEnabled is enabled.
-flushInterval=60000
+flushInterval={{ pulsar_bookie_flush_interval }}
 
 # Allow the expansion of bookie storage capacity. Newly added ledger
 # and index dirs must be empty.
@@ -94,7 +94,7 @@ flushInterval=60000
 # co-ordination service(eg: Zookeeper service).
 # When false, bookie will use its ip address for the registration.
 # Defaults to false.
-useHostNameAsBookieID=false
+useHostNameAsBookieID={{ pulsar_bookie_use_host_name_as_bookie_id }}
 
 # If you want to custom bookie ID or use a dynamic network address for the bookie,
 # you can set this option.
