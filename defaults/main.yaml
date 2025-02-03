@@ -27,6 +27,15 @@ pulsar_zk_server_1: ansible-hostname
 pulsar_zk_server_2: ansible-hostname
 pulsar_zk_server_3: ansible-hostname
 pulsar_zk_port: 2184
+pulsar_bookie_port: 3181
+pulsar_bookie_journal_directory: data/bookkeeper/journal
+pulsar_bookie_min_usable_size_for_index_file_creation: 1073741824
+pulsar_bookie_listening_interface: eth0
+pulsar_bookie_advertised_address: ansible_host # Must use ansible_host of playbooks
+pulsar_bookie_allow_loopback: false
+pulsar_bookie_death_watch_interval: 1000
+pulsar_bookie_flush_interval: 60000
+pulsar_bookie_use_host_name_as_bookie_id: false
 pulsar_zk_chroot_path: chroot-path
 # wget 'https://www.apache.org/dyn/mirrors/mirrors.cgi?action=download&filename=pulsar/pulsar-4.0.1/apache-pulsar-4.0.1-bin.tar.gz' -O apache-pulsar-4.0.1-bin.tar.gz
 pulsar_mirror: https://www.apache.org/dyn/mirrors/mirrors.cgi?action=download&filename=pulsar/
@@ -47,3 +56,8 @@ pulsar_log_dir: /var/log/pulsar
 bookkeeper_start: yes
 # Restart bookkeeper on configuration change
 bookkeeper_restart: yes
+
+# Start broker after installation
+broker_start: yes
+# Restart broker on configuration change
+broker_restart: yes
