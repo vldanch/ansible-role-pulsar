@@ -1,2 +1,3 @@
 ---
 bookkeeper_unit_path: /lib/systemd/system/pulsar-bookkeeper.service
+broker_unit_path: /lib/systemd/system/pulsar-broker.service
