@@ -28,14 +28,24 @@ pulsar_zk_server_2: ansible-hostname
 pulsar_zk_server_3: ansible-hostname
 pulsar_zk_port: 2184
 pulsar_bookie_port: 3181
+pulsar_bookie_journal_directories: /tmp/bk-journal
 pulsar_bookie_journal_directory: data/bookkeeper/journal
+pulsar_bookie_allow_multiple_dirs_under_same_disk_partition: false
 pulsar_bookie_min_usable_size_for_index_file_creation: 1073741824
 pulsar_bookie_listening_interface: eth0
 pulsar_bookie_advertised_address: ansible_host # Must use ansible_host of playbooks
 pulsar_bookie_allow_loopback: false
 pulsar_bookie_death_watch_interval: 1000
 pulsar_bookie_flush_interval: 60000
+pulsar_bookie_allow_storage_expansion: false
 pulsar_bookie_use_host_name_as_bookie_id: false
+pulsar_bookie_bookie_id: ""
+pulsar_bookie_allow_ephemeral_ports: false
+pulsar_bookie_enable_local_transport: false
+pulsar_bookie_disable_server_socket_bind: false
+pulsar_bookie_skip_list_arena_chunk_size: 4194304
+pulsar_bookie_skip_list_arena_max_alloc_size: 131072
+pulsar_bookie_bookie_auth_provider_factory_class: null
 pulsar_bookie_gc_wait_time: 900000
 pulsar_bookie_gc_overreplicated_ledger_wait_time: 86400000
 pulsar_bookie_num_add_worker_threads: 0
@@ -45,6 +55,8 @@ pulsar_bookie_max_pending_read_requests_per_thread: 2500
 pulsar_bookie_max_pending_add_requests_per_thread: 10000
 pulsar_bookie_read_worker_threads_throttling_enabled: true
 pulsar_bookie_enable_busy_wait: false
+pulsar_bookie_is_force_gc_allow_when_no_space: false
+pulsar_bookie_verify_metadata_on_gc: false
 pulsar_bookie_force_allow_compaction: true
 pulsar_bookie_tls_provider: OpenSSL
 pulsar_bookie_tls_provider_factory_class: org.apache.bookkeeper.tls.TLSContextFactory
@@ -55,6 +67,23 @@ pulsar_bookie_tls_key_store_password_path: null
 pulsar_bookie_tls_trust_store_type: null
 pulsar_bookie_tls_trust_store: null
 pulsar_bookie_tls_trust_store_password_path: null
+pulsar_bookie_num_long_poll_worker_threads: 10
+pulsar_bookie_request_timer_tick_duration_ms: 10
+pulsar_bookie_request_timer_num_ticks: 1024
+pulsar_bookie_auditor_periodic_bookie_check_interval: 86400
+pulsar_bookie_rereplication_entry_batch_size: 100
+pulsar_bookie_sticky_read_s_enabled: true
+pulsar_bookie_reorder_read_sequence_enabled: true
+pulsar_bookie_open_ledger_rereplication_grace_period: 30000
+pulsar_bookie_auto_recovery_daemon_enabled: true
+pulsar_bookie_lost_bookie_recovery_delay: 0
+pulsar_bookie_use_v2_wire_protocol: true
+pulsar_bookie_server_tcp_no_delay: true
+pulsar_bookie_server_sock_keepalive: true
+pulsar_bookie_server_tcp_linger: 0
+pulsar_bookie_byte_buf_allocator_size_initial: 65536
+pulsar_bookie_byte_buf_allocator_size_min: 65536
+
 
 pulsar_zk_chroot_path: chroot-path
 # wget 'https://www.apache.org/dyn/mirrors/mirrors.cgi?action=download&filename=pulsar/pulsar-4.0.1/apache-pulsar-4.0.1-bin.tar.gz' -O apache-pulsar-4.0.1-bin.tar.gz
