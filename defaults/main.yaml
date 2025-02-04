@@ -83,7 +83,29 @@ pulsar_bookie_server_sock_keepalive: true
 pulsar_bookie_server_tcp_linger: 0
 pulsar_bookie_byte_buf_allocator_size_initial: 65536
 pulsar_bookie_byte_buf_allocator_size_min: 65536
-
+pulsar_bookie_byte_buf_allocator_size_max: 1048576
+pulsar_bookie_netty_max_frame_size_bytes: 5253120
+pulsar_bookie_journal_format_version_to_write: 5
+pulsar_bookie_journal_max_size_mb: 2048
+pulsar_bookie_journal_max_backups: 5
+pulsar_bookie_journal_pre_alloc_size_mb: 16
+pulsar_bookie_journal_write_buffer_size_kb: 64
+pulsar_bookie_journal_remove_from_page_cache: true
+pulsar_bookie_journal_write_data: true
+pulsar_bookie_journal_sync_data: true
+pulsar_bookie_journal_adaptive_group_writes: true
+pulsar_bookie_journal_max_group_wait_m_sec: 1
+pulsar_bookie_journal_buffered_writes_threshold: 524288
+pulsar_bookie_num_journal_callback_threads: 8
+pulsar_bookie_journal_alignment_size: 4096
+pulsar_bookie_journal_buffered_entries_threshold: 0
+pulsar_bookie_journal_flush_when_queue_empty: false
+pulsar_bookie_ledger_storage_class: org.apache.bookkeeper.bookie.storage.ldb.DbLedgerStorage
+pulsar_bookie_ledger_directories: data/bookkeeper/ledgers
+pulsar_bookie_index_directories: data/bookkeeper/ledgers
+pulsar_bookie_auditor_periodic_check_interval: 604800
+pulsar_bookie_sorted_ledger_storage_enabled: true
+pulsar_bookie_skip_list_size_limit: 67108864L
 
 pulsar_zk_chroot_path: chroot-path
 # wget 'https://www.apache.org/dyn/mirrors/mirrors.cgi?action=download&filename=pulsar/pulsar-4.0.1/apache-pulsar-4.0.1-bin.tar.gz' -O apache-pulsar-4.0.1-bin.tar.gz
