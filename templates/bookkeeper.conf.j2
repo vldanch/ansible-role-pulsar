@@ -32,7 +32,7 @@ bookiePort={{ pulsar_bookie_port }}
 #   journalDirectories=/tmp/bk-journal1,/tmp/bk-journal2
 # If journalDirectories is set, bookies will skip journalDirectory and use
 # this setting directory.
-# journalDirectories=/tmp/bk-journal
+# journalDirectories={{ pulsar_bookie_journal_directories }}
 
 # Directory Bookkeeper outputs its write ahead log
 # @deprecated since 4.5.0. journalDirectories is preferred over journalDirectory.
@@ -40,7 +40,7 @@ journalDirectory={{ pulsar_bookie_journal_directory }}
 
 # Configure the bookie to allow/disallow multiple ledger/index/journal directories
 # in the same filesystem disk partition
-# allowMultipleDirsUnderSameDiskPartition=false
+# allowMultipleDirsUnderSameDiskPartition={{ pulsar_bookie_allow_multiple_dirs_under_same_disk_partition }}
 
 # Minimum safe Usable size to be available in index directory for bookie to create
 # Index File while replaying journal at the time of bookie Start in Readonly Mode (in bytes)
@@ -88,7 +88,7 @@ flushInterval={{ pulsar_bookie_flush_interval }}
 
 # Allow the expansion of bookie storage capacity. Newly added ledger
 # and index dirs must be empty.
-# allowStorageExpansion=false
+# allowStorageExpansion={{ pulsar_bookie_allow_storage_expansion }}
 
 # Whether the bookie should use its hostname to register with the
 # co-ordination service(eg: Zookeeper service).
@@ -103,33 +103,33 @@ useHostNameAsBookieID={{ pulsar_bookie_use_host_name_as_bookie_id }}
 # bookieId is a non empty string that can contain ASCII digits and letters ([a-zA-Z9-0]),
 # colons, dashes, and dots.
 # For more information about bookieId, see http://bookkeeper.apache.org/bps/BP-41-bookieid/.
-# bookieId=
+# bookieId={{ pulsar_bookie_bookie_id }}
 
 # Whether the bookie is allowed to use an ephemeral port (port 0) as its
 # server port. By default, an ephemeral port is not allowed.
 # Using an ephemeral port as the service port usually indicates a configuration
 # error. However, in unit tests, using an ephemeral port will address port
 # conflict problems and allow running tests in parallel.
-# allowEphemeralPorts=false
+# allowEphemeralPorts={{ pulsar_bookie_allow_ephemeral_ports }}
 
 # Whether allow the bookie to listen for BookKeeper clients executed on the local JVM.
-# enableLocalTransport=false
+# enableLocalTransport={{ pulsar_bookie_enable_local_transport }}
 
 # Whether allow the bookie to disable bind on network interfaces,
 # this bookie will be available only to BookKeeper clients executed on the local JVM.
-# disableServerSocketBind=false
+# disableServerSocketBind={{ pulsar_bookie_disable_server_socket_bind }}
 
 # The number of bytes we should use as chunk allocation for
 # org.apache.bookkeeper.bookie.SkipListArena
-# skipListArenaChunkSize=4194304
+# skipListArenaChunkSize={{ pulsar_bookie_skip_list_arena_chunk_size }}
 
 # The max size we should allocate from the skiplist arena. Allocations
 # larger than this should be allocated directly by the VM to avoid fragmentation.
-# skipListArenaMaxAllocSize=131072
+# skipListArenaMaxAllocSize={{ pulsar_bookie_skip_list_arena_max_alloc_size }}
 
 # The bookie authentication provider factory class name.
 # If this is null, no authentication will take place.
-# bookieAuthProviderFactoryClass=null
+# bookieAuthProviderFactoryClass={{ pulsar_bookie_bookie_auth_provider_factory_class }}
 
 #############################################################################
 ## Garbage collection settings
@@ -181,10 +181,10 @@ enableBusyWait={{ pulsar_bookie_enable_busy_wait }}
 # Forcing GC may get some space back, but may also fill up disk space more quickly.
 # This is because new log files are created before GC, while old garbage
 # log files are deleted after GC.
-# isForceGCAllowWhenNoSpace=false
+# isForceGCAllowWhenNoSpace={{ pulsar_bookie_is_force_gc_allow_when_no_space }}
 
 # True if the bookie should double check readMetadata prior to gc
-# verifyMetadataOnGC=false
+# verifyMetadataOnGC={{ pulsar_bookie_verify_metadata_on_gc }}
 
 # Allow force compaction when disabling the entry log compaction or not.
 # It will enable you to manually force compact the entry log even if
@@ -228,13 +228,13 @@ forceAllowCompaction={{ pulsar_bookie_force_allow_compaction }}
 #############################################################################
 
 # The number of threads that should handle long poll requests.
-# numLongPollWorkerThreads=10
+# numLongPollWorkerThreads={{ pulsar_bookie_num_long_poll_worker_threads }}
 
 # The tick duration in milliseconds for long poll requests.
-# requestTimerTickDurationMs=10
+# requestTimerTickDurationMs={{ pulsar_bookie_request_timer_tick_duration_ms }}
 
 # The number of ticks per wheel for the long poll request timer.
-# requestTimerNumTicks=1024
+# requestTimerNumTicks={{ pulsar_bookie_request_timer_num_ticks }}
 
 #############################################################################
 ## AutoRecovery settings
@@ -247,30 +247,30 @@ forceAllowCompaction={{ pulsar_bookie_force_allow_compaction }}
 # Setting this to 0 disabled the periodic check. Bookie checks will still
 # run when a bookie fails.
 # The interval is specified in seconds.
-auditorPeriodicBookieCheckInterval=86400
+auditorPeriodicBookieCheckInterval={{ pulsar_bookie_auditor_periodic_bookie_check_interval }}
 
 # The number of entries that a replication will re-replicate in parallel.
-rereplicationEntryBatchSize=100
+rereplicationEntryBatchSize={{ pulsar_bookie_rereplication_entry_batch_size }}
 
 # Enable/disable having read operations for a ledger to be sticky to a single bookie.
-stickyReadSEnabled=true
+stickyReadSEnabled={{ pulsar_bookie_sticky_read_s_enabled }}
 
 # Enable/disable reordering read sequence on reading entries.
-reorderReadSequenceEnabled=true
+reorderReadSequenceEnabled={{ pulsar_bookie_reorder_read_sequence_enabled }}
 
 # Auto-replication
 # The grace period, in milliseconds, that the replication worker waits before fencing and
 # replicating a ledger fragment that's still being written to upon bookie failure.
-openLedgerRereplicationGracePeriod=30000
+openLedgerRereplicationGracePeriod={{ pulsar_bookie_open_ledger_rereplication_grace_period }}
 
 # Whether the bookie itself can start auto-recovery service also or not
-autoRecoveryDaemonEnabled=true
+autoRecoveryDaemonEnabled={{ pulsar_bookie_auto_recovery_daemon_enabled }}
 
 # How long to wait, in seconds, before starting auto recovery of a lost bookie
-lostBookieRecoveryDelay=0
+lostBookieRecoveryDelay={{ pulsar_bookie_lost_bookie_recovery_delay }}
 
 # Use older Bookkeeper wire protocol (Before Version 3) for AutoRecovery. Default is false
-useV2WireProtocol=true
+useV2WireProtocol={{ pulsar_bookie_use_v2_wire_protocol }}
 
 #############################################################################
 ## Placement settings
@@ -311,22 +311,22 @@ reppDnsResolverClass=org.apache.pulsar.zookeeper.ZkBookieRackAffinityMapping
 # a single IP packet, setting server.tcpnodelay to false to enable Nagle algorithm
 # can provide better performance.
 # Default value is true.
-serverTcpNoDelay=true
+serverTcpNoDelay={{ pulsar_bookie_server_tcp_no_delay }}
 
 # This setting is used to send keep-alive messages on connection-oriented sockets.
-# serverSockKeepalive=true
+# serverSockKeepalive={{ pulsar_bookie_server_sock_keepalive }}
 
 # The socket linger timeout on close.
 # When enabled, a close or shutdown will not return until all queued messages for
 # the socket have been successfully sent or the linger timeout has been reached.
 # Otherwise, the call returns immediately and the closing is done in the background.
-# serverTcpLinger=0
+# serverTcpLinger={{ pulsar_bookie_server_tcp_linger }}
 
 # The Recv ByteBuf allocator initial buf size.
-# byteBufAllocatorSizeInitial=65536
+# byteBufAllocatorSizeInitial={{ pulsar_bookie_byte_buf_allocator_size_initial }}
 
 # The Recv ByteBuf allocator min buf size.
-# byteBufAllocatorSizeMin=65536
+# byteBufAllocatorSizeMin={{ pulsar_bookie_byte_buf_allocator_size_min }}
 
 # The Recv ByteBuf allocator max buf size.
 # byteBufAllocatorSizeMax=1048576
