@@ -451,7 +451,7 @@ auditorPeriodicCheckInterval={{ pulsar_bookie_auditor_periodic_check_interval }}
 # server started to swap some ledgers from memory to disk.
 # Too frequent swap will affect performance. You can tune this number
 # to gain performance according your requirements.
-openFileLimit=0
+openFileLimit={{ pulsar_bookie_open_file_limit }}
 
 # The fileinfo format version to write.
 #  Available formats are 0-1:
@@ -461,7 +461,7 @@ openFileLimit=0
 # If you'd like to disable persisting ExplicitLac, you can set this config to 0 and
 # also journalFormatVersionToWrite should be set to < 6. If there is mismatch then the
 # serverconfig is considered invalid.
-fileInfoFormatVersionToWrite=0
+fileInfoFormatVersionToWrite={{ pulsar_bookie_file_info_format_version_to_write }}
 
 # Size of a index page in ledger cache, in bytes
 # A larger index page can improve performance writing page to disk,
@@ -469,7 +469,7 @@ fileInfoFormatVersionToWrite=0
 # ledgers have similar number of entries.
 # If you have large number of ledgers and each ledger has fewer entries,
 # smaller index page would improve memory usage.
-# pageSize=8192
+# pageSize={{ pulsar_bookie_page_size }}
 
 # How many index pages provided in ledger cache
 # If number of index pages reaches this limitation, bookie server
@@ -481,7 +481,7 @@ fileInfoFormatVersionToWrite=0
 # gain better performance in lager number of ledgers with fewer entries case
 # If pageLimit is -1, bookie server will use 1/3 of JVM memory to compute
 # the limitation of number of index pages.
-pageLimit=0
+pageLimit={{ pulsar_bookie_page_limit }}
 
 #############################################################################
 ## Ledger manager settings
@@ -498,7 +498,7 @@ pageLimit=0
 # Root Zookeeper path to store ledger metadata
 # This parameter is used by zookeeper-based ledger manager as a root znode to
 # store all ledgers.
-zkLedgersRootPath=/ledgers
+zkLedgersRootPath={{ pulsar_bookie_zk_ledgers_root_path }}
 
 #############################################################################
 ## Entry log settings
@@ -506,51 +506,51 @@ zkLedgersRootPath=/ledgers
 
 # Max file size of entry logger, in bytes
 # A new entry log file will be created when the old one reaches the file size limitation
-logSizeLimit=1073741824
+logSizeLimit={{ pulsar_bookie_log_size_limit }}
 
 # Enable/Disable entry logger preallocation
-entryLogFilePreallocationEnabled=true
+entryLogFilePreallocationEnabled={{ pulsar_bookie_entry_log_file_preallocation_enabled }}
 
 # Entry log flush interval in bytes.
 # Default is 0. 0 or less disables this feature and effectively flush
 # happens on log rotation.
 # Flushing in smaller chunks but more frequently reduces spikes in disk
 # I/O. Flushing too frequently may also affect performance negatively.
-flushEntrylogBytes=33554432
+flushEntrylogBytes={{ pulsar_bookie_flush_entry_log_bytes }}
 
 # The number of bytes we should use as capacity for BufferedReadChannel. Default is 512 bytes.
-readBufferSizeBytes=4096
+readBufferSizeBytes={{ pulsar_bookie_read_buffer_size_bytes }}
 
 # The number of bytes used as capacity for the write buffer. Default is 64KB.
-writeBufferSizeBytes=65536
+writeBufferSizeBytes={{ pulsar_bookie_write_buffer_size_bytes }}
 
 # Specifies if entryLog per ledger is enabled/disabled. If it is enabled, then there would be a
 # active entrylog for each ledger. It would be ideal to enable this feature if the underlying
 # storage device has multiple DiskPartitions or SSD and if in a given moment, entries of fewer
 # number of active ledgers are written to a bookie.
-# entryLogPerLedgerEnabled=false
+# entryLogPerLedgerEnabled={{ pulsar_bookie_entry_log_per_ledger_enabled }}
 
 #############################################################################
 ## Entry log compaction settings
 #############################################################################
 
 # Set the rate at which compaction will readd entries. The unit is adds per second.
-compactionRate=1000
+compactionRate={{ pulsar_bookie_compaction_rate }}
 
 # If bookie is using hostname for registration and in ledger metadata then
 # whether to use short hostname or FQDN hostname. Defaults to false.
-# useShortHostName=false
+# useShortHostName={{ pulsar_bookie_use_short_host_name }}
 
 # Threshold of minor compaction
 # For those entry log files whose remaining size percentage reaches below
 # this threshold will be compacted in a minor compaction.
 # If it is set to less than zero, the minor compaction is disabled.
-minorCompactionThreshold=0.2
+minorCompactionThreshold={{ pulsar_bookie_minor_compaction_threshold }}
 
 # Interval to run minor compaction, in seconds
 # If it is set to less than zero, the minor compaction is disabled.
 # Note: should be greater than gcWaitTime.
-minorCompactionInterval=3600
+minorCompactionInterval={{ pulsar_bookie_minor_compaction_interval }}
 
 # Set the maximum number of entries which can be compacted without flushing.
 # When compacting, the entries are written to the entrylog and the new offsets
@@ -560,7 +560,7 @@ minorCompactionInterval=3600
 # more memory will be used for offsets. Each offset consists of 3 longs.
 # This parameter should _not_ be modified unless you know what you're doing.
 # The default is 100,000.
-compactionMaxOutstandingRequests=100000
+compactionMaxOutstandingRequests={{ pulsar_bookie_compaction_max_outstanding_requests }}
 
 # Threshold of major compaction
 # For those entry log files whose remaining size percentage reaches below
@@ -568,34 +568,34 @@ compactionMaxOutstandingRequests=100000
 # Those entry log files whose remaining size percentage is still
 # higher than the threshold will never be compacted.
 # If it is set to less than zero, the minor compaction is disabled.
-majorCompactionThreshold=0.5
+majorCompactionThreshold={{ pulsar_bookie_major_compaction_threshold }}
 
 # Interval to run major compaction, in seconds
 # If it is set to less than zero, the major compaction is disabled.
 # Note: should be greater than gcWaitTime.
-majorCompactionInterval=86400
+majorCompactionInterval={{ pulsar_bookie_major_compaction_interval }}
 
 # Throttle compaction by bytes or by entries.
-isThrottleByBytes=false
+isThrottleByBytes={{ pulsar_bookie_is_throttle_by_bytes }}
 
 # Set the rate at which compaction will readd entries. The unit is adds per second.
-compactionRateByEntries=1000
+compactionRateByEntries={{ pulsar_bookie_compaction_rate_by_entries }}
 
 # Set the rate at which compaction will readd entries. The unit is bytes added per second.
-compactionRateByBytes=1000000
+compactionRateByBytes={{ pulsar_bookie_compaction_rate_by_bytes }}
 
 #############################################################################
 ## Statistics
 #############################################################################
 
 # Whether statistics are enabled
-# enableStatistics=true
+# enableStatistics={{ pulsar_bookie_enable_statistics }}
 
 # Stats Provider Class (if statistics are enabled)
-statsProviderClass=org.apache.bookkeeper.stats.prometheus.PrometheusMetricsProvider
+statsProviderClass={{ pulsar_bookie_stats_provider_class }}
 
 # Default port for Prometheus metrics exporter
-prometheusStatsHttpPort=8000
+prometheusStatsHttpPort={{ pulsar_bookie_prometheus_stats_http_port }}
 
 #############################################################################
 ## Read-only mode support
@@ -605,14 +605,14 @@ prometheusStatsHttpPort=8000
 # If "readOnlyModeEnabled=true" then on all ledger disks full, bookie will be converted
 # to read-only mode and serve only read requests. Otherwise the bookie will be shutdown.
 # By default this will be disabled.
-readOnlyModeEnabled=true
+readOnlyModeEnabled={{ pulsar_bookie_read_only_mode_enabled }}
 
 # Whether the bookie is force started in read only mode or not
-# forceReadOnlyBookie=false
+# forceReadOnlyBookie={{ pulsar_bookie_force_read_only_bookie }}
 
 # Persist the bookie status locally on the disks. So the bookies can keep their status upon restarts
 # @Since 4.6
-# persistBookieStatusEnabled=false
+# persistBookieStatusEnabled={{ pulsar_bookie_persist_bookie_status_enabled }}
 
 #############################################################################
 ## Disk utilization
@@ -626,13 +626,13 @@ readOnlyModeEnabled=true
 # if `isForceGCAllowWhenNoSpace` is disabled. When the usage becomes lower than the threshold, the major and minor
 # compaction will be resumed.
 # Valid values should be in between 0 and 1 (exclusive). The default value is 0.95.
-# diskUsageThreshold=0.95
+# diskUsageThreshold={{ pulsar_bookie_disk_usage_threshold }}
 
 # The disk free space warn threshold.
 # Disk is considered almost full when usage threshold is exceeded. Bookie will suspend the major
 # compaction when usage threshold is exceed if `isForceGCAllowWhenNoSpace` is disabled. When the usage becomes lower
 # than the threshold, the major compaction will be resumed. The default value is 0.90.
-# diskUsageWarnThreshold=0.90
+# diskUsageWarnThreshold={{ pulsar_bookie_disk_usage_warn_threshold }}
 
 # Set the disk free space low water mark threshold. Disk is considered full when
 # usage threshold is exceeded. Disk returns back to non-full state when usage is
@@ -643,11 +643,11 @@ readOnlyModeEnabled=true
 # If the bookie already runs into read-only mode and the disk usage becomes lower than this threshold, the bookie
 # will change from read-only to read-write mode. At the same time, the major and minor compaction will be resumed
 # if `isForceGCAllowWhenNoSpace` is disabled. The default value is the same with `diskUsageThreshold`.
-# diskUsageLwmThreshold=0.95
+# diskUsageLwmThreshold={{ pulsar_bookie_disk_usage_lwm_threshold }}
 
 # Disk check interval in milli seconds, interval to check the ledger dirs usage.
 # Default is 10000
-diskCheckInterval=10000
+diskCheckInterval={{ pulsar_bookie_disk_check_interval }}
 
 
 ############################################## Metadata Services ##############################################
@@ -673,18 +673,18 @@ metadataServiceUri=metadata-store:zk:{{ pulsar_zk_server_1 }}:2181,{{ pulsar_zk_
 # Ledger Manager Class
 # What kind of ledger manager is used to manage how ledgers are stored, managed
 # and garbage collected. Try to read 'BookKeeper Internals' for detail info.
-# ledgerManagerFactoryClass=org.apache.bookkeeper.meta.HierarchicalLedgerManagerFactory
+# ledgerManagerFactoryClass={{ pulsar_bookie_ledger_manager_factory_class }}
 
 # @Deprecated - `ledgerManagerType` is deprecated in favor of using `ledgerManagerFactoryClass`.
-# ledgerManagerType=hierarchical
+# ledgerManagerType={{ pulsar_bookie_ledger_manager_type }}
 
 # sometimes the bookkeeper server classes are shaded. the ledger manager factory classes might be relocated to be under other packages.
 # this would fail the clients using shaded factory classes since the factory classes are not matched. Users can enable this flag to
 # allow using shaded ledger manager class to connect to a bookkeeper cluster.
-# allowShadedLedgerManagerFactoryClass=false
+# allowShadedLedgerManagerFactoryClass={{ pulsar_bookie_allow_shaded_ledger_manager_factory_class }}
 
 # the shaded ledger manager factory prefix. this is used when `allowShadedLedgerManagerFactoryClass` is set to true.
-# shadedLedgerManagerFactoryClassPrefix=dlshade.
+# shadedLedgerManagerFactoryClassPrefix={{ pulsar_bookie_shaded_ledger_manager_factory_class_prefix }}
 
 
 #############################################################################
@@ -702,34 +702,34 @@ zkServers={{ pulsar_zk_server_1 }}:{{ pulsar_zk_port }},{{ pulsar_zk_server_2 }}
 # was partitioned off from ZooKeeper for more than the session timeout
 # JVM garbage collection, disk I/O will cause SESSION_EXPIRED.
 # Increment this value could help avoiding this issue
-zkTimeout=30000
+zkTimeout={{ pulsar_bookie_zk_timeout }}
 
 # The Zookeeper client backoff retry start time in millis.
-# zkRetryBackoffStartMs=1000
+# zkRetryBackoffStartMs={{ pulsar_bookie_zk_retry_backoff_start_ms }}
 
 # The Zookeeper client backoff retry max time in millis.
-# zkRetryBackoffMaxMs=10000
+# zkRetryBackoffMaxMs={{ pulsar_bookie_zk_retry_backoff_max_ms }}
 
 # Set ACLs on every node written on ZooKeeper, this way only allowed users
 # will be able to read and write BookKeeper metadata stored on ZooKeeper.
 # In order to make ACLs work you need to setup ZooKeeper JAAS authentication
 # all the bookies and Client need to share the same user, and this is usually
 # done using Kerberos authentication. See ZooKeeper documentation
-zkEnableSecurity=false
+zkEnableSecurity={{ pulsar_bookie_zk_enable_security }}
 
 #############################################################################
 ## Server parameters
 #############################################################################
 
 # The flag enables/disables starting the admin http server. Default value is 'false'.
-httpServerEnabled=false
+httpServerEnabled={{ pulsar_bookie_http_server_enabled }}
 
 # The http server port to listen on. Default value is 8080.
 # Use `8000` as the port to keep it consistent with prometheus stats provider
-httpServerPort=8000
+httpServerPort={{ pulsar_bookie_http_server_port }}
 
 # The http server class
-httpServerClass=org.apache.bookkeeper.http.vertx.VertxHttpServer
+httpServerClass={{ pulsar_bookie_http_server_class }}
 
 # Configure a list of server components to enable and load on a bookie server.
 # This provides the plugin run extra services along with a bookie server.
@@ -749,15 +749,15 @@ httpServerClass=org.apache.bookkeeper.http.vertx.VertxHttpServer
 # For good performance, it should be big enough to hold a substantial amount
 # of entries in the flush interval
 #  By default it will be allocated to 1/4th of the available direct memory
-dbStorage_writeCacheMaxSizeMb=
+dbStorage_writeCacheMaxSizeMb={{ pulsar_bookie_db_storage_write_cache_max_size_mb }}
 
 # Size of Read cache. Memory is allocated from JVM direct memory.
 # This read cache is pre-filled doing read-ahead whenever a cache miss happens
 #  By default it will be allocated to 1/4th of the available direct memory
-dbStorage_readAheadCacheMaxSizeMb=
+dbStorage_readAheadCacheMaxSizeMb={{ pulsar_bookie_db_storage_read_ahead_cache_max_size_mb }}
 
 # How many entries to pre-fill in cache after a read cache miss
-dbStorage_readAheadCacheBatchSize=1000
+dbStorage_readAheadCacheBatchSize={{ pulsar_bookie_db_storage_read_ahead_cache_batch_size }}
 
 ## RocksDB specific configurations
 ## DbLedgerStorage uses RocksDB to store the indexes from
@@ -773,14 +773,14 @@ dbStorage_readAheadCacheBatchSize=1000
 # database which can reach ~2GB in some cases
 # Default is to use 10% of the direct memory size
 # These settings are ignored since Pulsar 2.11 / Bookkeeper 4.15
-dbStorage_rocksDB_blockCacheSize=
+dbStorage_rocksDB_blockCacheSize={{ pulsar_bookie_db_storage_rocks_db_block_cache_size }}
 
 # Other RocksDB specific tunables
 # These settings are ignored since Pulsar 2.11 / Bookkeeper 4.15
-dbStorage_rocksDB_writeBufferSizeMB=64
-dbStorage_rocksDB_sstSizeInMB=64
-dbStorage_rocksDB_blockSize=65536
-dbStorage_rocksDB_bloomFilterBitsPerKey=10
-dbStorage_rocksDB_numLevels=-1
-dbStorage_rocksDB_numFilesInLevel0=4
-dbStorage_rocksDB_maxSizeInLevel1MB=256
+dbStorage_rocksDB_writeBufferSizeMB={{ pulsar_bookie_db_storage_rocks_db_write_buffer_size_mb }}
+dbStorage_rocksDB_sstSizeInMB={{ pulsar_bookie_db_storage_rocks_db_sst_size_in_mb }}
+dbStorage_rocksDB_blockSize={{ pulsar_bookie_db_storage_rocks_db_block_size }}
+dbStorage_rocksDB_bloomFilterBitsPerKey={{ pulsar_bookie_db_storage_rocks_db_bloom_filter_bits_per_key }}
+dbStorage_rocksDB_numLevels={{ pulsar_bookie_db_storage_rocks_db_num_levels }}
+dbStorage_rocksDB_numFilesInLevel0={{ pulsar_bookie_db_storage_rocks_db_num_files_in_level_0 }}
+dbStorage_rocksDB_maxSizeInLevel1MB={{ pulsar_bookie_db_storage_rocks_db_max_size_in_level_1_mb }}
